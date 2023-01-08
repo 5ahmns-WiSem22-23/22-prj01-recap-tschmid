@@ -9,11 +9,14 @@ public class CarInputHandler : MonoBehaviour
 
     void Awake()
     {
+
+        //läd TopDownCarController
         topDownCarController = GetComponent<TopDownCarController>();
     }
 
     void Update()
     {
+        //setzt inputaxen
         Vector2 inputVector = Vector2.zero;
 
         inputVector.x = Input.GetAxis("Horizontal");

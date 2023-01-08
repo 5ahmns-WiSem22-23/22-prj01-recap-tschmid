@@ -14,21 +14,23 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        //counter
         pickUpCount = 0;
     }
 
     void Update()
     {
-        // Über die Delta Time kann unabhängig von der FrameRate ein Timer gebaut werden
+        // delta time lässt von framerate unabhängigen counter zu
         time += Time.deltaTime;
 
-        // Wenn die Zeit abgelaufen ist, soll das Spiel neu beginnen
+        // läuft die zeit ab, läd die szene neu
         if (time >= timeMax)
         {
             SceneManager.LoadScene(0);
         }
 
-        // Der Timer und der Score sollen jeden Frame angezeigt werden
+        // timer und score werden als text angezeigt
         timer.text = Mathf.Round(timeMax - time).ToString() + " sec. übrig"; ;
         counter.text = "Score: " + pickUpCount.ToString();
     }

@@ -18,11 +18,15 @@ public class TopDownCarController : MonoBehaviour
 
     void Awake()
     {
+        //läd den Rigidbody des Autos
+
         carRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
+        //führt Funktionen unabhängig der Framerate aus
+
         ApplyEngineForce();
 
         KillOrthoVel();
@@ -32,9 +36,11 @@ public class TopDownCarController : MonoBehaviour
 
     void ApplyEngineForce()
     {
+        //auto wird langsamer wenn kein Gas gegeben wird
         if (accelerationInput == 0)
             carRigidbody2D.drag = Mathf.Lerp(carRigidbody2D.drag, 3.0f, Time.fixedDeltaTime * 3);
         else carRigidbody2D.drag = 0;
+        //auto beschleunigung
         Vector2 engineForceVector = transform.up * accelerationInput * accelerationFac;
 
         carRigidbody2D.AddForce(engineForceVector, ForceMode2D.Force);
@@ -42,9 +48,11 @@ public class TopDownCarController : MonoBehaviour
 
     void ApplySteering()
     {
+
+        //auto kann sich am stand nicht im kreis drehen
         float minSpeedForTurn = (carRigidbody2D.velocity.magnitude / 8);
         minSpeedForTurn = Mathf.Clamp01(minSpeedForTurn);
-
+        //auto lenkung
         rotationAngle -= steeringInput * turnFac * minSpeedForTurn;
 
         carRigidbody2D.MoveRotation(rotationAngle);
@@ -52,13 +60,16 @@ public class TopDownCarController : MonoBehaviour
 
     void KillOrthoVel()
     {
+        //sorgt für ein besseres handling des autos, da die velocity nach außen (fliehkräfte) gedämpft werden ähnlich wie bei einem echten Auto wegen wiederstand der Reifen
         Vector2 forwardVelocity = transform.up * Vector2.Dot(carRigidbody2D.velocity, transform.up);
         Vector2 rightVelocity = transform.right * Vector2.Dot(carRigidbody2D.velocity, transform.right);
-
+       
         carRigidbody2D.velocity = forwardVelocity + rightVelocity * driftFac;
     }
     public void SetInputVector(Vector2 inputVector)
     {
+        //übernimmt die eingaben des spielers aus "CarInputHandler.cs"
+
         steeringInput = inputVector.x;
         accelerationInput = inputVector.y;
     }
