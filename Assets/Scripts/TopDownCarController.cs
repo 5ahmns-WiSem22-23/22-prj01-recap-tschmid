@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class TopDownCarController : MonoBehaviour
 {
+    [SerializeField]
+    private float waitTime = 5f;
+
     [Header("carsettings")]
     public float driftFac = 0.95f;
-    public float accelerationFac = 30.0f;
-    public float turnFac = 3.5f;
+    public float accelerationFac = 8f;
+    public float turnFac = 4f;
 
     float accelerationInput = 0;
     float steeringInput = 0;
@@ -15,6 +18,19 @@ public class TopDownCarController : MonoBehaviour
     float rotationAngle = 0;
 
     Rigidbody2D carRigidbody2D;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("speed"))
+            StartCoroutine(wait(waitTime));
+    }
+
+    IEnumerator wait(float waitTime)
+    {
+        accelerationFac = 15f;
+        yield return new WaitForSeconds(waitTime);
+        accelerationFac = 8f;
+    }
 
     void Awake()
     {

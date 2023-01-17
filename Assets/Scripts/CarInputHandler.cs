@@ -9,7 +9,6 @@ public class CarInputHandler : MonoBehaviour
 
     void Awake()
     {
-
         //läd TopDownCarController
         topDownCarController = GetComponent<TopDownCarController>();
     }
